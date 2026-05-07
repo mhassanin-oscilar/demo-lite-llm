@@ -156,20 +156,6 @@ curl -H "Authorization: Bearer $LITELLM_MASTER_KEY" \
 | [requirements.txt](requirements.txt) | Client deps: openai, httpx, python-dotenv |
 | [main.py](main.py) | Exercises the gateway and prints the spend breakdown |
 
-## Troubleshooting
-
-- **`Fetched 2 spend log rows` and everything is "unknown"** —
-  `summarize=false` is missing from the `/spend/logs` query. Default response
-  is daily aggregates that drop `spend_logs_metadata`.
-- **`Stripped caller-supplied tags from metadata`** in `docker compose logs litellm` —
-  expected with the master key. `spend_logs_metadata` still flows through, so
-  attribution still works. To enable tags, mint a virtual key with
-  `metadata.allow_client_tags=true` via `/key/generate` and use that key.
-- **`Package openai is not installed`** — `pip install -r requirements.txt`
-  inside your active Python env.
-- **Spend rows don't appear immediately** — the proxy flushes its in-memory
-  spend queue on a short interval; `main.py` waits 2s, increase if needed.
-
 ## Cleanup
 
 ```bash
